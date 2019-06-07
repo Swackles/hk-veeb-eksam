@@ -8,15 +8,28 @@ block content
       th Nimi
       th Alles
       th Hind
+      if user.isManager()  
+        th Täitepaki suurus
+        th Müüdud
+        th Teenitud
       th Valikud
-    - each drink in drinks
+
+    each drink in drinks
         tr
           td= drink.name
-          - if drink.stock < 1
+          if drink.stock > 0 || user.isManager()
             td(id = `${drink.id}_drinkStock`)= drink.stock
             td= drink.price
+            if user.isManager()
+              td(id = `${drink.id}_drinkFill`)= drink.fillSize
+              td= drink.sold
+              td= drink.price * drink.sold
             td
-              button(onclick=`buyDrink(${drink.id})`) Osta
-          - else 
+              if user.isManager()
+                button(onclick=`addFillPack(${drink.id})`) Täida
+              else
+                button(onclick=`buyDrink(${drink.id})`) Osta
+
+          else 
             td(colspan="3") 
               font(color="red") Otsas

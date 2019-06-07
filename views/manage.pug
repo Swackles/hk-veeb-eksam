@@ -12,7 +12,7 @@ block content
       th Müüdud
       th Teenitud
       th Valikud
-    - each drink in drinks
+    each drink in drinks
       tr
         td= drink.name
         td(id = `${drink.id}_drinkStock`)= drink.stock

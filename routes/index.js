@@ -6,24 +6,35 @@ let connection = mysql.createConnection(config.get("database"));
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
-  getDrinks((res) => {
-    res.render('index', { title: 'Joogi Automaat', drinks: res });
+  getDrinks((drinks) => {
+    user = {
+      isManager: () => {
+        return false
+      }
+    }
+    console.log(user.isManager());
+    res.render('index', { title: 'Joogi Automaat', drinks: drinks, user: user  });
   });
 });
 
 router.get('/manage', (req, res, next) => {
-  getDrinks((res) => {
-    res.render('manage', { title: 'Haldus', drinks: res });
+  getDrinks((drinks) => {
+    user = {
+      isManager: () => {
+        return true
+      }
+    }
+    res.render('index', { title: 'Haldus', drinks: drinks, user: user });
   });
 })
 
 router.get('/:drinkId/sell', (req, res, next) => {
   getDrink(req.params.drinkId, (drink => {
-    if (drink.stock < 1) {
+    if (drink[0].stock < 1) {
       res.status(404);
       res.send("Jook on otsas");
     } else {
-      sellDrink(res => {
+      sellDrink(req.params.drinkId, drinkSell => {
         res.status(200);
         res.send();
       });
@@ -39,14 +50,14 @@ router.get('/:drinkId/fill', (req, res, next) => {
 });
 
 function getDrinks(callback) {
-  connection.query('SELECT id, ${config.get("identity")}drink AS name, fillpacksize AS fillSize, stock, untiPrice AS price, sold FROM drinks', (err, res, fields) => {
+  connection.query(`SELECT id, drink AS name, fillpacksize AS fillSize, stock, unitprice AS price, sold FROM ${config.get("identity")}drink`, (err, res, fields) => {
     if (err) throw err;
     else callback(res);
   });
 }
 
 function getDrink(id, callback) {
-  connection.query(`SELECT id, ${config.get("identity")}drink AS name, fillpacksize AS fillSize, stock, untiPrice AS price, sold FROM drinks WHERE id = ${id}`, (err, res, fields) => {
+  connection.query(`SELECT id, drink AS name, fillpacksize AS fillSize, stock, unitprice AS price, sold FROM ${config.get("identity")}drink WHERE id = ${id} LIMIT 1`, (err, res, fields) => {
     if (err) throw err;
     else callback(res);
   });
