@@ -1,0 +1,24 @@
+extends layout
+
+block content
+  h1= title 
+
+  table
+    tr
+      th Nimi
+      th Alles
+      th Hind
+      th Täitepaki suurus
+      th Müüdud
+      th Teenitud
+      th Valikud
+    - each drink in drinks
+      tr
+        td= drink.name
+        td(id = `${drink.id}_drinkStock`)= drink.stock
+        td= drink.price
+        td(id = `${drink.id}_drinkFill`)= drink.fillSize
+        td= drink.sold
+        td= drink.price * drink.sold
+        td
+          button(onclick=`addFillPack(${drink.id})`) Täida

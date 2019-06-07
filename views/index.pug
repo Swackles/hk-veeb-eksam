@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  h1= title 
+
+  table
+    tr
+      th Nimi
+      th Alles
+      th Hind
+      th Valikud
+    - each drink in drinks
+      tr
+        td= drink.name
+        td(id = `${drink.id}_drinkStock`)= drink.stock
+        td= drink.price
+        td
+          button(onclick=`buyDrink(${drink.id})`) Osta
