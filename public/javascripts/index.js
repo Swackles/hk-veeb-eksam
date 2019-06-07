@@ -21,6 +21,6 @@ function addFillPack(id) {
             stock.text = parseInt(stock.text) - parseInt(fill.text);
         })
         .fail(() => {
-            alert("Ei ole hetkel võimalik osta")
+            alert("Ei ole hetkel võimalik täita")
         });
 }
