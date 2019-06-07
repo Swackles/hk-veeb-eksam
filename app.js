@@ -8,7 +8,7 @@ const indexRouter = require('./routes/index');
 
 var app = express();
 
-const listener = app.listen(parseInt(config.get("server.port")) || 3000, err => {
+const listener = app.listen(parseInt(config.get("server.port")) || 8788, err => {
   if (err) console.log(err);
   else console.log(`App started on port: ${listener.address().port}`);
 });

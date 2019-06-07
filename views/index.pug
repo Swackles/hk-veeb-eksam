@@ -10,9 +10,13 @@ block content
       th Hind
       th Valikud
     - each drink in drinks
-      tr
-        td= drink.name
-        td(id = `${drink.id}_drinkStock`)= drink.stock
-        td= drink.price
-        td
-          button(onclick=`buyDrink(${drink.id})`) Osta
+        tr
+          td= drink.name
+          - if drink.stock < 1
+            td(id = `${drink.id}_drinkStock`)= drink.stock
+            td= drink.price
+            td
+              button(onclick=`buyDrink(${drink.id})`) Osta
+          - else 
+            td(colspan="3") 
+              font(color="red") Otsas
