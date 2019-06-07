@@ -64,7 +64,7 @@ function getDrink(id, callback) {
 }
 
 function sellDrink(id, callback) {
-  connection.query(`UPDATE ${config.get("identity")}drink SET stock = stock - 1 WHERE id = ${id}`, (err, res, fields) => {
+  connection.query(`UPDATE ${config.get("identity")}drink SET stock = stock - 1, sold = sold + 1 WHERE id = ${id}`, (err, res, fields) => {
     if (err) throw err;
     else callback(res);
   });
